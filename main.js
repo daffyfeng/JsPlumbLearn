@@ -1,3 +1,16 @@
+function addNode(parentId, nodeId, nodeLable, position) {
+  var panel = d3.select("#"+parentId);
+  panel.append('div').style('width','120px').style('height','50px')
+    .style('position','absolute')
+    .style('top',position.y).style('left',position.x)
+    .style('border','2px #9DFFCA solid').attr('align','center')
+    .attr('id',nodeId).classed('node',true)
+    .text(nodeLable);
+
+  return jsPlumb.getSelector('#' + nodeId)[0];
+}
+
+
 jsPlumb.ready(function () {
 
     var instance = jsPlumb.getInstance({
@@ -17,7 +30,7 @@ jsPlumb.ready(function () {
     });
 
     var basicType = {
-        connector: "StateMachine",
+        connector: [ "Flowchart", { stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true } ],
         paintStyle: { strokeStyle: "red", lineWidth: 4 },
         hoverPaintStyle: { strokeStyle: "blue" },
         overlays: [
@@ -28,9 +41,9 @@ jsPlumb.ready(function () {
 
     // this is the paint style for the connecting lines..
     var connectorPaintStyle = {
-            lineWidth: 10,
+            lineWidth: 4,
             strokeStyle: "#61B7CF",
-            joinstyle: "round",
+            //joinstyle: "round",
             outlineColor: "white",
             outlineWidth: 2
         },
@@ -55,6 +68,7 @@ jsPlumb.ready(function () {
                 lineWidth: 3
             },
             isSource: true,
+            isTarget: true,
             connector: [ "Flowchart", { stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true } ],
             connectorStyle: connectorPaintStyle,
             hoverPaintStyle: endpointHoverStyle,
@@ -76,8 +90,10 @@ jsPlumb.ready(function () {
             maxConnections: -1,
             dropOptions: { hoverClass: "hover", activeClass: "active" },
             isTarget: true,
+            isSource: true,
+            connector: [ "Flowchart", { stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true } ], //连接线可以自动弯折的直线
             overlays: [
-                [ "Label", { location: [0.5, -0.5], label: "Drop", cssClass: "endpointTargetLabel" } ]
+                [ "Label", { location: [0.2, -0.5], label: "Drop", cssClass: "endpointTargetLabel" } ]
             ]
         },
         init = function (connection) {
@@ -96,6 +112,34 @@ jsPlumb.ready(function () {
             instance.addEndpoint("flowchart" + toId, targetEndpoint, { anchor: targetAnchors[j], uuid: targetUUID });
         }
     };
+
+    $('.windows').attr('draggable','true').on('dragstart', function(ev){
+      //ev.dataTransfer.setData("text", ev.target.id);
+      ev.originalEvent.dataTransfer.setData('text',ev.target.textContent);
+      console.log('drag start');
+    });
+
+
+    $('#canvas').on('drop', function(ev){
+      //avoid event conlict for jsPlumb
+      if (ev.target.className.indexOf('_jsPlumb') >= 0 ) {
+        return;
+      }
+     
+      ev.preventDefault();
+      var mx = '' + ev.originalEvent.offsetX + 'px';
+      var my = '' + ev.originalEvent.offsetY + 'px';
+     
+      console.log('on drop : ' + ev.originalEvent.dataTransfer.getData('text'));
+      var uid = new Date().getTime();
+      var node = addNode('canvas','node' + uid, 'node', {x:mx,y:my});
+      addPorts(instance, node, ['out'],'output');
+      addPorts(instance, node, ['in1','in2'],'input');
+      instance.draggable($(node));
+    }).on('dragover', function(ev){
+      ev.preventDefault();
+      console.log('on drag over');
+    });
 
     // suspend drawing and initialise.
     instance.batch(function () {

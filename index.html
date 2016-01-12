@@ -17,35 +17,85 @@
     <script src="./js/jsPlumb-1.7.10.js"></script>
     <script src="./main.js"></script>
     <style type="text/css">
-      body {
-          /*padding-top: 60px;
-          padding-bottom: 40px;
-          float: center;*/
-        }
+      .windows { border:1px solid #346789;
+box-shadow: 2px 2px 19px #aaa;
+   -o-box-shadow: 2px 2px 19px #aaa;
+   -webkit-box-shadow: 2px 2px 19px #aaa;
+   -moz-box-shadow: 2px 2px 19px #aaa;
+-moz-border-radius:0.5em;
+border-radius:0.5em;
+opacity:0.8;
+filter:alpha(opacity=80);
+width:12em; height:5em;
+line-height:5em;
+text-align:center;
+z-index:20; 
+background-color:#eeeeef;
+color:black;
+font-family:helvetica;padding:0.5em;
+font-size:0.9em;}
+.windows:hover {
+
+box-shadow: 2px 2px 19px #444;
+   -o-box-shadow: 2px 2px 19px #444;
+   -webkit-box-shadow: 2px 2px 19px #444;
+   -moz-box-shadow: 2px 2px 19px #444;
+    opacity:0.6;
+filter:alpha(opacity=60);
+
+}
     </style>
 </head>
 <body>
-	<div class="flow-fluid">
-      
-        <!-- <div class="col-sm-6" style="height:400px">
-          <div class="panel panel-default" style="margin:2px;height:400px">
-            <div class="panel-body">
-              <div id="flow-panel" class='col-sm-12' style="position:absolute;height:100%">
+<row>
+  <div class="col-sm-2">
+    <div id="container-id" >
+      <div id="mainContent">
+          <div id="sidebar">
+              Module List
+              <div class="windows" id="">
+                  <strong>one</strong><br />
+                  <br />
+              </div>
+              <div class="windows" id="">
+                  <strong>two</strong><br />
+                  <br />
+              </div>
+               <div class="windows" id="">
+                  <strong>three</strong><br />
+                  <br />
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-10">
+  	<div class="flow-fluid" >
+        
+          <!-- <div class="col-sm-6" style="height:400px">
+            <div class="panel panel-default" style="margin:2px;height:400px">
+              <div class="panel-body">
+                <div id="flow-panel" class='col-sm-12' style="position:absolute;height:100%">
+                </div>
               </div>
             </div>
-          </div>
-        </div> -->
+          </div> -->
 
-        <div class="jtk-demo-main">
-            <!-- demo -->
-            <div class="jtk-demo-canvas canvas-wide flowchart-demo jtk-surface jtk-surface-nopan" id="canvas">
-                <div class="window jtk-node" id="flowchartWindow1"><strong>1</strong><br/><br/></div>
-                <div class="window jtk-node" id="flowchartWindow2"><strong>2</strong><br/><br/></div>
-                <div class="window jtk-node" id="flowchartWindow3"><strong>3</strong><br/><br/></div>
-                <div class="window jtk-node" id="flowchartWindow4"><strong>4</strong><br/><br/></div>
-            </div>
-            <!-- /demo -->
-        </div>
+          <div class="jtk-demo-main">
+              <!-- demo -->
+              <div class="jtk-demo-canvas canvas-wide flowchart-demo jtk-surface jtk-surface-nopan col-sm-12" id="canvas" style="position:absolute;height:400px">
+                  <div class="window jtk-node" id="flowchartWindow1"><strong>1</strong><br/><br/></div>
+                  <div class="window jtk-node" id="flowchartWindow2"><strong>2</strong><br/><br/></div>
+                  <div class="window jtk-node" id="flowchartWindow3"><strong>3</strong><br/><br/></div>
+                  <div class="window jtk-node" id="flowchartWindow4"><strong>4</strong><br/><br/></div>
+              </div>
+              <!-- /demo -->
+          </div>
+    </div>
+  </div>
+</row>
+  
+
         
     
 </body>
