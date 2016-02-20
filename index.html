@@ -17,34 +17,33 @@
     <script src="./js/jsPlumb-1.7.10.js"></script>
     <script src="./main.js"></script>
     <style type="text/css">
-      .windows { border:1px solid #346789;
-box-shadow: 2px 2px 19px #aaa;
-   -o-box-shadow: 2px 2px 19px #aaa;
-   -webkit-box-shadow: 2px 2px 19px #aaa;
-   -moz-box-shadow: 2px 2px 19px #aaa;
--moz-border-radius:0.5em;
-border-radius:0.5em;
-opacity:0.8;
-filter:alpha(opacity=80);
-width:12em; height:5em;
-line-height:5em;
-text-align:center;
-z-index:20; 
-background-color:#eeeeef;
-color:black;
-font-family:helvetica;padding:0.5em;
-font-size:0.9em;}
-.windows:hover {
-
-box-shadow: 2px 2px 19px #444;
-   -o-box-shadow: 2px 2px 19px #444;
-   -webkit-box-shadow: 2px 2px 19px #444;
-   -moz-box-shadow: 2px 2px 19px #444;
-    opacity:0.6;
-filter:alpha(opacity=60);
-
+      .windows {border:1px solid #346789;
+                box-shadow: 2px 2px 19px #aaa;
+                -o-box-shadow: 2px 2px 19px #aaa;
+                -webkit-box-shadow: 2px 2px 19px #aaa;
+                -moz-box-shadow: 2px 2px 19px #aaa;
+                -moz-border-radius:0.5em;
+                border-radius:0.5em;
+                opacity:0.8;
+                filter:alpha(opacity=80);
+                width:120px; height:50px;
+                line-height:5em;
+                text-align:center;
+                z-index:20; 
+                background-color:#eeeeef;
+                color:black;
+                font-family:helvetica;padding:0.5em;
+                font-size:0.9em;}
+      .windows:hover {
+                box-shadow: 2px 2px 19px #444;
+                -o-box-shadow: 2px 2px 19px #444;
+                -webkit-box-shadow: 2px 2px 19px #444;
+                -moz-box-shadow: 2px 2px 19px #444;
+                opacity:0.6;
+                filter:alpha(opacity=60);
 }
     </style>
+    
 </head>
 <body>
 <row>
@@ -65,6 +64,7 @@ filter:alpha(opacity=60);
                   <strong>three</strong><br />
                   <br />
               </div>
+              
           </div>
       </div>
     </div>
@@ -92,8 +92,20 @@ filter:alpha(opacity=60);
               <!-- /demo -->
           </div>
     </div>
+    
   </div>
 </row>
+<canvas id="jpg1" width="128" height="128" class="windows"></canvas>
+<script type="text/javascript">
+         var canvas = document.getElementById('jpg1');
+        var context = canvas.getContext('2d');
+        var myImage = new Image();
+        myImage.src = './image/Person.png';
+        myImage.onload = function () {
+          context.drawImage(myImage, 0, 0);
+        }
+        
+    </script>
   
 
         

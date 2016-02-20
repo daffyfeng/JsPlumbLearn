@@ -1,15 +1,60 @@
 function addNode(parentId, nodeId, nodeLable, position) {
   var panel = d3.select("#"+parentId);
-  panel.append('div').style('width','120px').style('height','50px')
+  panel.append('canvas').style('width','128px').style('height','128px')
     .style('position','absolute')
     .style('top',position.y).style('left',position.x)
     .style('border','2px #9DFFCA solid').attr('align','center')
-    .attr('id',nodeId).classed('node',true)
+    .attr('id',nodeId).classed('windows',true)
     .text(nodeLable);
+
+    var canvas = document.getElementById(nodeId);
+    var context = canvas.getContext('2d');
+        var myImage = new Image();
+        myImage.src = './image/Person.png';
+        myImage.onload = function () {
+          context.drawImage(myImage, 0, 0,128,128,0,0,300,150);
+        }
 
   return jsPlumb.getSelector('#' + nodeId)[0];
 }
 
+function addPorts(instance, node, ports, type) {
+  //Assume horizental layout
+  var number_of_ports = ports.length;
+  var i = 0;
+  var height = $(node).height();  //Note, jquery does not include border for height
+  var y_offset = 1 / ( number_of_ports + 1);
+  var y = 0;
+
+  for ( ; i < number_of_ports; i++ ) {
+    var anchor = [0,0,0,0];
+    var paintStyle = { radius:5, fillStyle:'#FF8891' };
+    var isSource = false, isTarget = false;
+    if ( type === 'output' ) {
+      anchor[0] = 1;
+      paintStyle.fillStyle = '#216477';
+      isSource = true;
+    } else {
+      isTarget =true;
+    }
+
+    anchor[1] = y + y_offset;
+    y = anchor[1];
+
+    instance.addEndpoint(node, {
+     endpoint: "Dot",
+      uuid:node.getAttribute("id") + "-" + ports[i],
+      connector: [ "Flowchart", { stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true } ],
+      paintStyle: paintStyle,
+      anchor:anchor,
+      maxConnections:-1,
+      isSource:isSource,
+      isTarget:isTarget,
+      outlineWidth: 2,
+            outlineColor: "white"
+    });
+  }
+}
 
 jsPlumb.ready(function () {
 
@@ -31,7 +76,7 @@ jsPlumb.ready(function () {
 
     var basicType = {
         connector: [ "Flowchart", { stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true } ],
-        paintStyle: { strokeStyle: "red", lineWidth: 4 },
+        paintStyle: { strokeStyle: "red", lineWidth: 4 ,fillStyle: "transparent"},
         hoverPaintStyle: { strokeStyle: "blue" },
         overlays: [
             "Arrow"
@@ -120,7 +165,7 @@ jsPlumb.ready(function () {
     });
 
 
-    $('#canvas').on('drop', function(ev){
+    $('#canvas').on('drop', function(ev){ // 画布上拖动停下来的时候才执行 drop
       //avoid event conlict for jsPlumb
       if (ev.target.className.indexOf('_jsPlumb') >= 0 ) {
         return;
@@ -132,9 +177,9 @@ jsPlumb.ready(function () {
      
       console.log('on drop : ' + ev.originalEvent.dataTransfer.getData('text'));
       var uid = new Date().getTime();
-      var node = addNode('canvas','node' + uid, 'node', {x:mx,y:my});
+      var node = addNode('canvas','node' + uid, ev.originalEvent.dataTransfer.getData('text'), {x:mx,y:my});
       addPorts(instance, node, ['out'],'output');
-      addPorts(instance, node, ['in1','in2'],'input');
+      addPorts(instance, node, ['in1'],'input');
       instance.draggable($(node));
     }).on('dragover', function(ev){
       ev.preventDefault();
@@ -194,3 +239,4 @@ jsPlumb.ready(function () {
     jsPlumb.fire("jsPlumbDemoLoaded", instance);
 
 });
+

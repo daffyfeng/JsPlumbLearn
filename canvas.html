@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>画布</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<canvas id="jpg1" width="200" height="100" class=""></canvas>
+<script type="text/javascript">
+         var canvas = document.getElementById('jpg1');
+        var context = canvas.getContext('2d');
+        var myImage = new Image();
+        myImage.src = './image/Person.png';
+        myImage.onload = function () {
+        	context.drawImage(myImage, 100, 50);
+        }
+
+        $('.windows').attr('draggable','true').on('dragstart', function(ev){
+      //ev.dataTransfer.setData("text", ev.target.id);
+      ev.originalEvent.dataTransfer.setData('text',ev.target.textContent);
+      console.log('drag start');
+    });
+
+
+    $('#canvas').on('drop', function(ev){ // 画布上拖动停下来的时候才执行 drop
+      //avoid event conlict for jsPlumb
+      if (ev.target.className.indexOf('_jsPlumb') >= 0 ) {
+        return;
+      }
+     
+      ev.preventDefault();
+      var mx = '' + ev.originalEvent.offsetX + 'px';
+      var my = '' + ev.originalEvent.offsetY + 'px';
+     
+      console.log('on drop : ' + ev.originalEvent.dataTransfer.getData('text'));
+      var uid = new Date().getTime();
+      var node = addNode('canvas','node' + uid, ev.originalEvent.dataTransfer.getData('text'), {x:mx,y:my});
+      addPorts(instance, node, ['out'],'output');
+      addPorts(instance, node, ['in1'],'input');
+      instance.draggable($(node));
+    }).on('dragover', function(ev){
+      ev.preventDefault();
+      console.log('on drag over');
+    });
+        
+    </script>
+</body>
+</html>
