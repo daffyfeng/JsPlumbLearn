@@ -1,6 +1,6 @@
 function addNode(parentId, nodeId, nodeLable, position) {
   var panel = d3.select("#"+parentId);
-  panel.append('canvas').style('width','128px').style('height','128px')
+  panel.append('canvas').style('width','64px').style('height','64px')
     .style('position','absolute')
     .style('top',position.y).style('left',position.x)
     .style('border','2px #9DFFCA solid').attr('align','center')
